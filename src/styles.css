@@ -16,5 +16,8 @@ body {
     margin-top: 10em;
     display: flex;
     flex-wrap: wrap;
+}
 
+.color-element {
+    flex-grow: 1;
 }

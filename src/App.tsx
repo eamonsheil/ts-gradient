@@ -5,8 +5,13 @@ import './styles.css';
 const App = () => {
     return (
         <div>
-            <h1>This is objectively more useful than create-react-app</h1>
             <h3>programatically-generated gradient. from #000 to #fff</h3>
+            <label>First Color: <span>#</span>
+                <input type="text" />
+            </label>
+            <label>Second Color: <span>#</span>
+                <input type="text" />
+            </label>
             <Gradient />
         </div>
 

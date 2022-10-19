@@ -14,12 +14,16 @@ export function Gradient() {
         const firstAsInt = parseInt(firstColor, 16)
         const lastAsInt = parseInt(lastColor, 16)
 
-        console.log('int: ', firstAsInt)
+        const difference = lastAsInt - firstAsInt
+        let interval: number | string = (difference / (.6 * difference)).toFixed(2)
+        interval = parseInt(interval, 10)
+
+
         console.log('hex: ', firstAsInt.toString(16))
         console.log(parseInt(lastColor, 16))
 
         const hexArray = []
-        for (let i = firstAsInt; i < lastAsInt; i += 1) {
+        for (let i = firstAsInt; i < lastAsInt; i += interval) {
             let hexVal = ''
 
             // increment Red
@@ -30,7 +34,7 @@ export function Gradient() {
 
 
             // increment Green
-            const greenVal = parseInt(firstColor.substring(2, 4)) + i
+            const greenVal = parseInt(firstColor.substring(2, 4)) + i * 5
             hexVal += greenVal;
 
 
@@ -40,17 +44,20 @@ export function Gradient() {
             hexVal += blueVal
 
             hexArray.push(hexVal)
-
+            // debugger
         }
+        console.log('firstAsInt: ', firstAsInt)
+        console.log('lastAsInt: ', lastAsInt)
+        console.log('difference: ', difference)
+        console.log('interval: ', interval)
 
         hexArray.push(lastAsInt)
         console.log(hexArray.length)
 
-
         return (
             hexArray.map((num, idx) => {
                 return (
-                    <div onClick={() => console.log(num)} key={idx} style={{
+                    <div className='color-element' onClick={() => console.log(num)} key={idx} style={{
                         'backgroundColor': `#${num.toString(16)}`,
                         'width': '3px',
                         'height': '10%',
