@@ -1,4 +1,4 @@
-## Programatically Created Gradient
+## Programmatically Created Gradient
 
 the goal of this mini project is to create an smooth gradient between two user-selectex colors
 
