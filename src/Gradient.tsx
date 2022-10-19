@@ -12,20 +12,19 @@ export function Gradient() {
 
     const createGradient = (): React.ReactNode => {
 
-        const firstAsInt = parseInt(firstColor, 16)
-        const lastAsInt = parseInt(lastColor, 16)
+        const firstAsInt = parseInt(firstColor, 16);
+        const lastAsInt = parseInt(lastColor, 16);
 
-        const difference = lastAsInt - firstAsInt
-        const interval = (difference / 10000)
+        const difference = lastAsInt - firstAsInt;
+        const interval = (difference / 10000);
 
 
 
-        console.log('hex: ', firstAsInt.toString(16))
-        console.log(parseInt(lastColor, 16))
+        console.log('hex: ', firstAsInt.toString(16));
+        console.log(parseInt(lastColor, 16));
 
-        const hexArray: string[] = []
+        const hexArray: string[] = [];
 
-        // 
         async function init() {
 
             // encapsulating the hexArray population in a Promise for testing puropses
@@ -35,29 +34,29 @@ export function Gradient() {
                 let loopCount = 0;
                 for (let i = firstAsInt; i < lastAsInt; i += interval) {
                     if (loopCount > 8000) {
-                        reject('interval is too small')
+                        reject('interval is too small');
                     }
                     loopCount++;
-                    let hexVal = ''
+                    let hexVal = '';
 
                     // increment Red
-                    const redVal = parseInt(firstColor.substring(0, 2)) + i
+                    const redVal = parseInt(firstColor.substring(0, 2)) + i;
                     hexVal += redVal;
-                    console.log('redVal: ', redVal)
-                    console.log(i.toString(16))
+                    console.log('redVal: ', redVal);
+                    console.log(i.toString(16));
 
 
                     // increment Green
-                    const greenVal = parseInt(firstColor.substring(2, 4)) + i * 3
+                    const greenVal = parseInt(firstColor.substring(2, 4)) + i * 3;
                     hexVal += greenVal;
 
 
 
                     // increment Blue
-                    const blueVal = parseInt(firstColor.substring(4, 6)) + i
-                    hexVal += blueVal
+                    const blueVal = parseInt(firstColor.substring(4, 6)) + i;
+                    hexVal += blueVal;
 
-                    hexArray.push(hexVal)
+                    hexArray.push(hexVal);
                     // debugger
                 }
                 resolve();
@@ -65,15 +64,15 @@ export function Gradient() {
 
             await arrayPopulate
                 .then(() => console.log("%csuccess, yes!", "color:green"))
-                .catch((err) => console.log(`%cERROR: ${err}`, "color:red"))
+                .catch((err) => console.log(`%cERROR: ${err}`, "color:red"));
 
-            console.log('firstAsInt: ', firstAsInt)
-            console.log('lastAsInt: ', lastAsInt)
-            console.log('difference: ', difference)
-            console.log('interval: ', interval)
+            console.log('firstAsInt: ', firstAsInt);
+            console.log('lastAsInt: ', lastAsInt);
+            console.log('difference: ', difference);
+            console.log('interval: ', interval);
 
-            hexArray.push(lastAsInt)
-            console.log(hexArray.length)
+            hexArray.push(lastAsInt);
+            console.log(hexArray.length);
         }
 
         init();
