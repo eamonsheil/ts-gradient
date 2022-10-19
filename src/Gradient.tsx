@@ -34,7 +34,9 @@ export function Gradient() {
                 let loopCount = 0;
                 for (let i = firstAsInt; i < lastAsInt; i += interval) {
                     if (loopCount > 8000) {
-                        reject('interval is too small');
+                        const err = new Error('interval is too small and therefore creates too many loops');
+                        reject(err);
+                        break;
                     }
                     loopCount++;
                     let hexVal = '';
@@ -64,7 +66,7 @@ export function Gradient() {
 
             await arrayPopulate
                 .then(() => console.log("%csuccess, yes!", "color:green"))
-                .catch((err) => console.log(`%cERROR: ${err}`, "color:red"));
+                .catch((err) => console.log(`%c${err}`, "color:red"));
 
             console.log('firstAsInt: ', firstAsInt);
             console.log('lastAsInt: ', lastAsInt);
