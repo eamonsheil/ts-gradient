@@ -8,6 +8,7 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
+  // devtool: 'inline-nosources-cheap-module-source-map',
   module: {
     rules: [
       {
