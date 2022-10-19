@@ -33,6 +33,7 @@ export function Gradient() {
             const arrayPopulate = new Promise<void>((resolve, reject) => {
                 let loopCount = 0;
                 for (let i = firstAsInt; i < lastAsInt; i += interval) {
+                    const increment = Math.round(i)
                     if (loopCount > 8000) {
                         const err = new Error('interval is too small and therefore creates too many loops');
                         reject(err);
@@ -42,20 +43,20 @@ export function Gradient() {
                     let hexVal = '';
 
                     // increment Red
-                    const redVal = parseInt(firstColor.substring(0, 2)) + i;
+                    const redVal = parseInt(firstColor.substring(0, 2)) + increment;
                     hexVal += redVal;
                     console.log('redVal: ', redVal);
-                    console.log(i.toString(16));
+                    console.log(increment.toString(16));
 
 
                     // increment Green
-                    const greenVal = parseInt(firstColor.substring(2, 4)) + i * 3;
+                    const greenVal = parseInt(firstColor.substring(2, 4)) + increment * 3;
                     hexVal += greenVal;
 
 
 
                     // increment Blue
-                    const blueVal = parseInt(firstColor.substring(4, 6)) + i;
+                    const blueVal = parseInt(firstColor.substring(4, 6)) + increment;
                     hexVal += blueVal;
 
                     hexArray.push(hexVal);
