@@ -15,8 +15,8 @@ export function Gradient() {
         const lastAsInt = parseInt(lastColor, 16)
 
         const difference = lastAsInt - firstAsInt
-        let interval: number | string = (difference / (.6 * difference)).toFixed(2)
-        interval = parseInt(interval, 10)
+        const interval = Math.ceil((difference / 100))
+
 
 
         console.log('hex: ', firstAsInt.toString(16))
@@ -34,7 +34,7 @@ export function Gradient() {
 
 
             // increment Green
-            const greenVal = parseInt(firstColor.substring(2, 4)) + i * 5
+            const greenVal = parseInt(firstColor.substring(2, 4)) + i * 3
             hexVal += greenVal;
 
 
