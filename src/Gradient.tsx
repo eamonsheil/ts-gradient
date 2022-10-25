@@ -1,19 +1,20 @@
-import * as React from 'react';
+import { useState } from 'react';
 
 export interface IGradientProps {
-    placeholder?: undefined;
+    secondColor: string
+    firstColor: string
 }
 
-export function Gradient() {
+export function Gradient({ firstColor, secondColor }: IGradientProps) {
+    const [showGradient, setShowGradient] = useState<boolean>(false)
+    // const firstColor = '000000';
+    // const lastColor = '0000ff';
 
-    const firstColor = '000000';
-    const lastColor = '0000ff';
 
-
-    const createGradient = (): React.ReactNode => {
+    function createGradient(): React.ReactNode {
 
         const firstAsInt = parseInt(firstColor, 16);
-        const lastAsInt = parseInt(lastColor, 16);
+        const lastAsInt = parseInt(secondColor, 16);
 
         const difference = lastAsInt - firstAsInt;
         const interval = (difference / 10000);
@@ -21,62 +22,52 @@ export function Gradient() {
 
 
         console.log('hex: ', firstAsInt.toString(16));
-        console.log(parseInt(lastColor, 16));
+        console.log(parseInt(secondColor, 16));
 
         const hexArray: string[] = [];
 
         async function init() {
+            let loopCount = 0;
 
-            // encapsulating the hexArray population in a Promise for testing puropses
-            // Trying to find ideal interval to achieve a smmooth gradient
-            // if interval is too small this loop will overload the browser without error-checking/correction
-            const arrayPopulate = new Promise<void>((resolve, reject) => {
-                let loopCount = 0;
-                for (let i = firstAsInt; i < lastAsInt; i += interval) {
-                    const increment = Math.round(i)
-                    if (loopCount > 8000) {
-                        const err = new Error('interval is too small and therefore creates too many loops');
-                        reject(err);
-                        break;
-                    }
-                    loopCount++;
-                    let hexVal = '';
+            for (let i = firstAsInt; i < lastAsInt; i += 1) {
+                const increment = Math.round(i)
 
-                    // increment Red
-                    const redVal = parseInt(firstColor.substring(0, 2)) + increment;
-                    hexVal += redVal;
-                    console.log('redVal: ', redVal);
-                    console.log(increment.toString(16));
-
-
-                    // increment Green
-                    const greenVal = parseInt(firstColor.substring(2, 4)) + increment * 3;
-                    hexVal += greenVal;
-
-
-
-                    // increment Blue
-                    const blueVal = parseInt(firstColor.substring(4, 6)) + increment;
-                    hexVal += blueVal;
-
-                    hexArray.push(hexVal);
-                    // debugger
+                if (loopCount > 8000) {
+                    throw new Error('interval is too small and therefore creates too many loops');
                 }
-                resolve();
-            })
+                loopCount++;
 
-            await arrayPopulate
-                .then(() => console.log("%csuccess, yes!", "color:green"))
-                .catch((err) => console.log(`%c${err}`, "color:red"));
+                let hexVal = '';
+
+                // increment Red
+                const redVal = parseInt(firstColor.substring(0, 2)) + increment;
+                hexVal += redVal;
+                console.log('redVal: ', redVal);
+                // console.log(increment.toString(16));
+
+
+                // increment Green
+                const greenVal = parseInt(firstColor.substring(2, 4)) + increment * 10;
+                hexVal += greenVal;
+
+
+                // increment Blue
+                const blueVal = parseInt(firstColor.substring(4, 6)) + increment;
+                hexVal += blueVal;
+
+                hexArray.push(hexVal);
+                // debugger
+            }
 
             console.log('firstAsInt: ', firstAsInt);
             console.log('lastAsInt: ', lastAsInt);
             console.log('difference: ', difference);
             console.log('interval: ', interval);
 
-            hexArray.push(lastAsInt);
+            // hexArray.push(lastAsInt);
             console.log(hexArray.length);
         }
+
 
         init();
 
@@ -86,7 +77,7 @@ export function Gradient() {
             hexArray.map((num, idx) => {
                 return (
                     <div className='color-element' onClick={() => console.log(num)} key={idx} style={{
-                        'backgroundColor': `#${num.toString(16)}`,
+                        'backgroundColor': `#${num.toString()}`,
                         'width': '3px',
                         'height': '10%',
                         // 'border': '1px solid red'
@@ -101,7 +92,11 @@ export function Gradient() {
 
     return (
         <div className='gradient-container'>
-            {createGradient()}
+            <p>Gradient from #{firstColor} to #{secondColor}</p>
+            <br />
+            <button onClick={() => setShowGradient(!showGradient)}>Generate Gradient</button>
+            {showGradient ? createGradient() : null}
+
         </div>
     );
 }
