@@ -4,9 +4,12 @@ the goal of this mini project is to create an smooth gradient between two user-s
 
 #### Rules:
 1. The gradient cannot be created through any css properties, except for general layout purposes
-2. the gradient must contain at least 3 distinct colors, to give it a 'morphing' effect
-3. the gradient should not be perfectly linear (to limit banding). There should be a sort of 3d effect - which can be achieved by offsetting the gradient's starting point.
-    - can be achieved by creating a Radial Gradient in a large container, containing a solid cover 'wall' div, then placing a smaller 'window' div element offset from the center of the gradient, to obscure the source.
+2. the gradient must contain at least 2 distinct colors, as indicated by the user
+3. should create 4 different gradients:
+    1. Linear horizontal (iterative) - basic gradient from left to right within the canvas
+    2. Linear vertical (iterative) - basic gradient from top to bottom within the canvas
+    3. Radial centered (recursive) - first color in the center, 2nd in each corner of the canvas
+    4. Radial corner-based (recursive) -first color in the upper left corner, second in the lower right corner ofthe canvas
 4. The inputs should be able to accept the following formats: 'ffffff' (hex), 'fff' (hex as 3 digits), 'white' (color names)
 
 

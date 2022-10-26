@@ -30,7 +30,7 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
             let loopCount = 0;
 
             for (let i = firstAsInt; i < lastAsInt; i += 1) {
-                const increment = Math.round(i)
+                const increment = Math.round(i);
 
                 if (loopCount > 8000) {
                     throw new Error('interval is too small and therefore creates too many loops');
