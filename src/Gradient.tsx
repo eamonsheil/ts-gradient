@@ -8,8 +8,8 @@ export interface IGradientProps {
 
 export function Gradient({ firstColor, secondColor }: IGradientProps) {
     const [width, height] = useWindowSize();
-    const [fillStyle, setFillStyle] = useState('iterative')
-    const [fillInterval, setFillInterval] = useState<number>(20)
+    const [fillStyle, setFillStyle] = useState('iterative');
+    const [fillInterval, setFillInterval] = useState<number>(20);
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -21,22 +21,11 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
     const diffGreen = parseInt(secondColor.substring(2, 4), 16) - parseInt(greenVal, 16);
     const diffBlue = parseInt(secondColor.substring(4, 6), 16) - parseInt(blueVal, 16);
 
-
-    console.log('redVal: ', redVal)
-    console.log('greenVal: ', greenVal)
-    console.log('blueVal: ', blueVal)
-
-
     let canvasSize = Math.floor(height * .8);
 
     // if the canvas size overflows the window width, the new size will be calculated in relation to width rather than height
     if (canvasSize > width) {
         canvasSize = Math.floor(width * .8);
-    }
-
-    // ensure canvas size is odd, to calculate the center point
-    if (canvasSize % 2 === 0) {
-        canvasSize++;
     }
 
 
@@ -57,9 +46,19 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
 
         fill(ctx, x + 2, y + 2, currColor);
     }
-    function fillFromCenter(ctx: CanvasRenderingContext2D | null, x: number, y: number, hexVal: string): void {
+    function fillFromCenter(ctx: CanvasRenderingContext2D | null, x: number, y: number, hexVal: string, numBoxes: number, boxSize: number): void {
+        console.log("x: ", x)
+        console.log("y: ", y)
+        console.log("numBoxes: ", numBoxes)
+        console.log("hexVal: ", hexVal)
 
+        ctx.fillStyle = `rgb(
+            ${"ff"},
+                  ${"ee"},
+                  0)
+        )`
 
+        ctx.fillRect(x * boxSize, y * boxSize, boxSize, boxSize);
     }
 
 
@@ -86,10 +85,28 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
                 }
             }
         }
-        if (drawStyle === "recursive") {
-            const center = Math.floor(canvasSize / 2)
 
-            fillFromCenter(ctx, center, center, firstColor);
+        if (drawStyle === "recursive") {
+            let center: number;
+            let boxSize: number;
+
+            if (fillInterval % 2 === 0) {
+                center = Math.floor((fillInterval - 1) / 2);
+                boxSize = canvasSize / (fillInterval - 1);
+
+                fillFromCenter(ctx, center, center, firstColor, fillInterval - 1, boxSize);
+            }
+            else {
+                center = Math.floor(fillInterval / 2);
+                boxSize = canvasSize / fillInterval;
+
+                fillFromCenter(ctx, center, center, firstColor, fillInterval, boxSize);
+            }
+
+            // const center = Math.floor(canvasSize / 2)
+
+
+
         }
 
     }
@@ -97,7 +114,6 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
 
     return (
         <div className='gradient-container'>
-            <p>Gradient from #{firstColor} to #{secondColor}</p>
             <br />
             <label htmlFor="fillStyle">Fill Style:
                 <select name="fillStyle" id="fillStyle" onChange={e => setFillStyle(e.target.value)}>
