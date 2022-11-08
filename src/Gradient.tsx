@@ -9,6 +9,7 @@ export interface IGradientProps {
 export function Gradient({ firstColor, secondColor }: IGradientProps) {
     const [width, height] = useWindowSize();
     const [fillStyle, setFillStyle] = useState('iterative')
+    const [fillInterval, setFillInterval] = useState<number>(20)
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -33,7 +34,7 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
         canvasSize = Math.floor(width * .8);
     }
 
-    // ensure canvas size is odd, so we can calculate the center
+    // ensure canvas size is odd, to calculate the center point
     if (canvasSize % 2 === 0) {
         canvasSize++;
     }
@@ -50,13 +51,13 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
             ${x}
         )`
 
-        // ctx?.fillStyle = 
+        // ctx?.fillStyle = currColor
         ctx?.fillRect(x * 2, y * 2, 2, 2)
 
 
         fill(ctx, x + 2, y + 2, currColor);
     }
-    function fillFromCenter(ctx: CanvasRenderingContext2D | null, x: number, y: number, hexVal: string, path: number[][]): void {
+    function fillFromCenter(ctx: CanvasRenderingContext2D | null, x: number, y: number, hexVal: string): void {
 
 
     }
@@ -68,25 +69,27 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
             console.log('incompatible input')
         }
 
-
         const ctx = canvasRef.current.getContext('2d');
 
+        // clear canvas before generating new gradient
+        ctx?.clearRect(0, 0, canvasSize, canvasSize);
+
         if (drawStyle === "iterative") {
-            const interval = Math.ceil(canvasSize / 15);
-            for (let i = 0; i < 20; i++) {
-                for (let j = 0; j < 15; j++) {
+            const boxSize = canvasSize / fillInterval;
+            for (let i = 0; i < fillInterval; i++) {
+                for (let j = 0; j < fillInterval; j++) {
                     ctx.fillStyle = `rgb(
                   ${Math.floor(255 - 42.5 * i)},
                   ${Math.floor(255 - 42.5 * j)},
                   0)`;
-                    ctx.fillRect(j * interval, i * interval, interval - 1, interval - 1);
+                    ctx.fillRect(j * boxSize, i * boxSize, boxSize, boxSize);
                 }
             }
         }
         if (drawStyle === "recursive") {
+            const center = Math.floor(canvasSize / 2)
 
-
-
+            fillFromCenter(ctx, center, center, firstColor);
         }
 
     }
@@ -102,6 +105,11 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
                     <option value="recursive">recursive</option>
                 </select>
             </label>
+            <div>
+                <label htmlFor="slider">Smoothness of gradient
+                    <input type="range" name="slider" id="" min="10" max="40" value={fillInterval} onChange={e => setFillInterval(parseInt(e.target.value))} />
+                </label>
+            </div>
             <button onClick={() => drawGradient(fillStyle)}>Generate Gradient</button>
 
             <canvas width={canvasSize} height={canvasSize}
