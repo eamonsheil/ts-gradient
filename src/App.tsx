@@ -6,9 +6,12 @@ const App = () => {
     const [firstColor, setFirstColor] = useState<string>('')
     const [secondColor, setSecondColor] = useState<string>('')
 
+    console.log(screen.availWidth)
+    console.log(screen.availHeight)
+
 
     return (
-        <div>
+        <>
             <h3>programatically-generated gradient. from #000 to #fff</h3>
             <label>First Color: <span>#</span>
                 <input
@@ -28,7 +31,7 @@ const App = () => {
             </label>
 
             <Gradient firstColor={firstColor} secondColor={secondColor} />
-        </div>
+        </>
 
     );
 }
