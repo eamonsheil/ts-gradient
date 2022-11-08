@@ -4,7 +4,7 @@ the goal of this mini project is to create an smooth gradient between two user-s
 
 #### Rules:
 1. The gradient cannot be created through any css properties, except for general layout purposes
-2. the gradient must contain at least 2 distinct colors, as indicated by the user
+2. the gradient must contain a beginnning and ending color, as indicated by the user
 3. should create 4 different gradients:
     1. Linear horizontal (iterative) - basic gradient from left to right within the canvas
     2. Linear vertical (iterative) - basic gradient from top to bottom within the canvas
@@ -16,3 +16,11 @@ the goal of this mini project is to create an smooth gradient between two user-s
 #### Stretch Goals:
 1. allow user to select multiple colors, and the order, they should also be able to select a 'randomize' option in which the colors are ordered
 2. users can take a 'snapshot' and save their created gradients.
+
+
+
+TODOS: 
+
+1. substitute user gradient config options in App.tsx and Gradient.tsx with GradientConfig.tsx, to clean up overall project code
+2. allow users to select colors from color wheel interface or something similar, then export user selection in hex code format
+3. complete recursive flood fill function

@@ -17,10 +17,6 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
     const greenVal = firstColor.substring(2, 4);
     const blueVal = firstColor.substring(4, 6);
 
-    const diffRed = parseInt(secondColor.substring(0, 2), 16) - parseInt(redVal, 16);
-    const diffGreen = parseInt(secondColor.substring(2, 4), 16) - parseInt(greenVal, 16);
-    const diffBlue = parseInt(secondColor.substring(4, 6), 16) - parseInt(blueVal, 16);
-
     let canvasSize = Math.floor(height * .8);
 
     // if the canvas size overflows the window width, the new size will be calculated in relation to width rather than height
@@ -28,24 +24,6 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
         canvasSize = Math.floor(width * .8);
     }
 
-
-    function fill(ctx: CanvasRenderingContext2D | null, x: number, y: number, hexVal: string): void {
-        console.log("x: ", x)
-        console.log("max: ", canvasSize)
-        if (x > canvasSize - 1 || y > canvasSize - 1) {
-            console.log('done')
-            return;
-        }
-        const currColor = `rgb(
-            ${x}
-        )`
-
-        // ctx?.fillStyle = currColor
-        ctx?.fillRect(x * 2, y * 2, 2, 2)
-
-
-        fill(ctx, x + 2, y + 2, currColor);
-    }
     function fillFromCenter(ctx: CanvasRenderingContext2D | null, x: number, y: number, hexVal: string, numBoxes: number, boxSize: number): void {
         console.log("x: ", x)
         console.log("y: ", y)
@@ -53,10 +31,9 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
         console.log("hexVal: ", hexVal)
 
         ctx.fillStyle = `rgb(
-            ${"ff"},
-                  ${"ee"},
-                  0)
-        )`
+            ${"ee"},
+            ${"ee"},
+            0)`;
 
         ctx.fillRect(x * boxSize, y * boxSize, boxSize, boxSize);
     }
@@ -75,12 +52,13 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
 
         if (drawStyle === "iterative") {
             const boxSize = canvasSize / fillInterval;
+
             for (let i = 0; i < fillInterval; i++) {
                 for (let j = 0; j < fillInterval; j++) {
                     ctx.fillStyle = `rgb(
-                  ${Math.floor(255 - 42.5 * i)},
-                  ${Math.floor(255 - 42.5 * j)},
-                  0)`;
+                        ${Math.floor(255 - 42.5 * i)},
+                        ${Math.floor(255 - 42.5 * j)},
+                        0)`;
                     ctx.fillRect(j * boxSize, i * boxSize, boxSize, boxSize);
                 }
             }
@@ -102,13 +80,7 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
 
                 fillFromCenter(ctx, center, center, firstColor, fillInterval, boxSize);
             }
-
-            // const center = Math.floor(canvasSize / 2)
-
-
-
         }
-
     }
 
 

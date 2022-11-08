@@ -3,6 +3,14 @@ import { useState } from 'react';
 export interface IGradientConfigProps {
 }
 
+
+
+// TODO: 
+// Substitute configuration code from App.tsx and Gradient.tsx with this file.
+
+
+
+
 export function GradientConfig(props: IGradientConfigProps) {
     const [firstColor, setFirstColor] = useState<string>('')
     const [secondColor, setSecondColor] = useState<string>('')
