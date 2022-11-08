@@ -6,9 +6,6 @@ const App = () => {
     const [firstColor, setFirstColor] = useState<string>('')
     const [secondColor, setSecondColor] = useState<string>('')
 
-    console.log(screen.availWidth)
-    console.log(screen.availHeight)
-
 
     return (
         <>
