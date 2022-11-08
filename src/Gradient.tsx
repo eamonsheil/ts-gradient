@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useWindowSize } from './hooks/useWindowSize';
 
 export interface IGradientProps {
@@ -8,6 +8,8 @@ export interface IGradientProps {
 
 export function Gradient({ firstColor, secondColor }: IGradientProps) {
     const [width, height] = useWindowSize();
+    const [fillStyle, setFillStyle] = useState('iterative')
+
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     const redVal = firstColor.substring(0, 2);
@@ -25,11 +27,16 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
 
 
     let canvasSize = Math.floor(height * .8);
+
     // if the canvas size overflows the window width, the new size will be calculated in relation to width rather than height
     if (canvasSize > width) {
         canvasSize = Math.floor(width * .8);
     }
 
+    // ensure canvas size is odd, so we can calculate the center
+    if (canvasSize % 2 === 0) {
+        canvasSize++;
+    }
 
 
     function fill(ctx: CanvasRenderingContext2D | null, x: number, y: number, hexVal: string): void {
@@ -39,7 +46,7 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
             console.log('done')
             return;
         }
-        let currColor = `rgb(
+        const currColor = `rgb(
             ${x}
         )`
 
@@ -49,8 +56,13 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
 
         fill(ctx, x + 2, y + 2, currColor);
     }
+    function fillFromCenter(ctx: CanvasRenderingContext2D | null, x: number, y: number, hexVal: string, path: number[][]): void {
 
-    function drawGradient(): void {
+
+    }
+
+
+    function drawGradient(drawStyle: string): void {
         if (firstColor.length < 6 || secondColor.length < 6) {
             // throw new Error('incompatible input');
             console.log('incompatible input')
@@ -59,19 +71,23 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
 
         const ctx = canvasRef.current.getContext('2d');
 
-        const interval = canvasSize / 20;
-        for (let i = 0; i < 20; i++) {
-            for (let j = 0; j < 20; j++) {
-                ctx.fillStyle = `rgb(
+        if (drawStyle === "iterative") {
+            const interval = Math.ceil(canvasSize / 15);
+            for (let i = 0; i < 20; i++) {
+                for (let j = 0; j < 15; j++) {
+                    ctx.fillStyle = `rgb(
                   ${Math.floor(255 - 42.5 * i)},
                   ${Math.floor(255 - 42.5 * j)},
                   0)`;
-                ctx.fillRect(j * interval, i * interval, 25, 25);
+                    ctx.fillRect(j * interval, i * interval, interval - 1, interval - 1);
+                }
             }
         }
+        if (drawStyle === "recursive") {
 
-        // fill(ctx, 1, 1, firstColor);
 
+
+        }
 
     }
 
@@ -80,7 +96,13 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
         <div className='gradient-container'>
             <p>Gradient from #{firstColor} to #{secondColor}</p>
             <br />
-            <button onClick={() => drawGradient()}>Generate Gradient</button>
+            <label htmlFor="fillStyle">Fill Style:
+                <select name="fillStyle" id="fillStyle" onChange={e => setFillStyle(e.target.value)}>
+                    <option value="iterative">iterative</option>
+                    <option value="recursive">recursive</option>
+                </select>
+            </label>
+            <button onClick={() => drawGradient(fillStyle)}>Generate Gradient</button>
 
             <canvas width={canvasSize} height={canvasSize}
                 style={{
