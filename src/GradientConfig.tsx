@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { GradientConfig } from './App';
 
 export interface IGradientConfigProps {
+    configObj?: GradientConfig;
 }
-
 
 
 // TODO: 
@@ -10,10 +11,9 @@ export interface IGradientConfigProps {
 
 
 
-
-export function GradientConfig(props: IGradientConfigProps) {
-    const [firstColor, setFirstColor] = useState<string>('')
-    const [secondColor, setSecondColor] = useState<string>('')
+export function GradientConfig({ configObj }: IGradientConfigProps) {
+    const [firstColor, setFirstColor] = useState<string>('');
+    const [secondColor, setSecondColor] = useState<string>('');
     const [fillStyle, setFillStyle] = useState('iterative');
     const [fillInterval, setFillInterval] = useState<number>(20);
 
@@ -45,11 +45,20 @@ export function GradientConfig(props: IGradientConfigProps) {
                     <option value="recursive">recursive</option>
                 </select>
             </label>
+
             <div>
                 <label htmlFor="slider">Smoothness of gradient
-                    <input type="range" name="slider" id="" min="10" max="40" value={fillInterval} onChange={e => setFillInterval(parseInt(e.target.value))} />
+                    <input
+                        type="range"
+                        name="slider"
+                        min="10"
+                        max="40"
+                        value={fillInterval}
+                        onChange={e => setFillInterval(parseInt(e.target.value))}
+                    />
                 </label>
             </div>
+
         </div>
     );
 }

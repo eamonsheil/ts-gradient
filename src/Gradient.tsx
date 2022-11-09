@@ -13,9 +13,7 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const redVal = firstColor.substring(0, 2);
-    const greenVal = firstColor.substring(2, 4);
-    const blueVal = firstColor.substring(4, 6);
+
 
     let canvasSize = Math.floor(height * .8);
 
@@ -25,24 +23,33 @@ export function Gradient({ firstColor, secondColor }: IGradientProps) {
     }
 
     function fillFromCenter(ctx: CanvasRenderingContext2D | null, x: number, y: number, hexVal: string, numBoxes: number, boxSize: number): void {
-        console.log("x: ", x)
-        console.log("y: ", y)
-        console.log("numBoxes: ", numBoxes)
-        console.log("hexVal: ", hexVal)
+        // console.log("x: ", x)
+        // console.log("y: ", y)
+        // console.log("numBoxes: ", numBoxes)
+        // console.log("hexVal: ", hexVal)
+
+
+        const redVal = hexVal.substring(0, 2);
+        const greenVal = hexVal.substring(2, 4);
+        const blueVal = hexVal.substring(4, 6);
+
+        console.log(redVal, greenVal, blueVal);
 
         ctx.fillStyle = `rgb(
-            ${"ee"},
-            ${"ee"},
-            0)`;
+            ${parseInt(redVal, 16)},
+            ${parseInt(greenVal, 16)},
+            ${parseInt(blueVal, 16)}
+            )`;
 
         ctx.fillRect(x * boxSize, y * boxSize, boxSize, boxSize);
+
     }
 
 
     function drawGradient(drawStyle: string): void {
         if (firstColor.length < 6 || secondColor.length < 6) {
             // throw new Error('incompatible input');
-            console.log('incompatible input')
+            console.log('incompatible input');
         }
 
         const ctx = canvasRef.current.getContext('2d');
