@@ -1,51 +1,36 @@
 import { useState } from 'react';
+import { ColorObj } from './declarations';
 import { Gradient } from './Gradient';
-// import { GradientConfig } from './GradientConfig';
+import { GradientConfig } from './GradientConfig';
 import './styles.css';
 
-export type GradientConfig = {
-    firstColor: string;
-    secondColor: string;
-    fillStyle: string;
-    fillInterval: number;
-}
-
-const defaultObj = {
-    firstColor: '',
-    secondColor: '',
-    fillStyle: 'iterative',
-    fillInterval: 20
-};
 
 const App = () => {
-    const [firstColor, setFirstColor] = useState<string>('');
-    const [secondColor, setSecondColor] = useState<string>('');
-
-    // const [configObj, setConfigObj] = useState<GradientConfig>(defaultObj);
+    const [firstColor, setFirstColor] = useState<ColorObj>({});
+    const [secondColor, setSecondColor] = useState<ColorObj>({});
+    const [fillStyle, setFillStyle] = useState('iterative');
+    const [fillInterval, setFillInterval] = useState<number>(20);
 
 
     return (
-        <>
+        <div>
             <h3>programatically-generated gradient.</h3>
-            <label>First Color: <span>#</span>
-                <input
-                    name='firstColor'
-                    type="text"
-                    value={firstColor}
-                    onChange={(e) => setFirstColor(e.target.value)}
-                />
-            </label>
-            <label> Second Color: <span>#</span>
-                <input
-                    name='secondColor'
-                    type="text"
-                    value={secondColor}
-                    onChange={(e) => setSecondColor(e.target.value)}
-                />
-            </label>
-            {/* <GradientConfig configObj={configObj} setConfigObj={setConfigObj} /> */}
-            <Gradient firstColor={firstColor} secondColor={secondColor} />
-        </>
+            <GradientConfig
+                firstColor={firstColor}
+                setFirstColor={setFirstColor}
+                secondColor={secondColor}
+                setSecondColor={setSecondColor}
+                setFillStyle={setFillStyle}
+                fillInterval={fillInterval}
+                setFillInterval={setFillInterval}
+            />
+            <Gradient
+                firstColor={firstColor}
+                secondColor={secondColor}
+                fillStyle={fillStyle}
+                fillInterval={fillInterval}
+            />
+        </div>
     );
 }
 

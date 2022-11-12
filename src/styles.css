@@ -13,6 +13,11 @@
     padding: 0;
 } */
 
+.color-selection {
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .gradient-container {
     background-color: aliceblue;
     width: 100%;

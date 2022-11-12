@@ -1,41 +1,32 @@
-import { useState } from 'react';
-import { GradientConfig } from './App';
+// import React, { useState } from 'react';
+import { ColorPicker } from './ColorPicker';
+
+import { ColorObj } from './declarations';
+
 
 export interface IGradientConfigProps {
-    configObj?: GradientConfig;
+    firstColor: ColorObj;
+    setFirstColor: React.Dispatch<React.SetStateAction<ColorObj>>;
+    secondColor: ColorObj;
+    setSecondColor: React.Dispatch<React.SetStateAction<ColorObj>>;
+    setFillStyle: React.Dispatch<React.SetStateAction<string>>;
+    fillInterval: number;
+    setFillInterval: React.Dispatch<React.SetStateAction<number>>;
 }
 
 
-// TODO: 
-// Substitute configuration code from App.tsx and Gradient.tsx with this file.
-
-
-
-export function GradientConfig({ configObj }: IGradientConfigProps) {
-    const [firstColor, setFirstColor] = useState<string>('');
-    const [secondColor, setSecondColor] = useState<string>('');
-    const [fillStyle, setFillStyle] = useState('iterative');
-    const [fillInterval, setFillInterval] = useState<number>(20);
-
+export function GradientConfig({ firstColor, setFirstColor, secondColor, setSecondColor, setFillStyle, fillInterval, setFillInterval }: IGradientConfigProps) {
 
     return (
         <div>
-            <label>First Color: <span>#</span>
-                <input
-                    name='firstColor'
-                    type="text"
-                    value={firstColor}
-                    onChange={(e) => setFirstColor(e.target.value)}
-                />
-            </label>
-            <label>Second Color: <span>#</span>
-                <input
-                    name='secondColor'
-                    type="text"
-                    value={secondColor}
-                    onChange={(e) => setSecondColor(e.target.value)}
-                />
-            </label>
+            <div className='color-selection'>
+                <label>First Color:
+                    <ColorPicker color={firstColor} setColor={setFirstColor} />
+                </label>
+                <label>Second Color:
+                    <ColorPicker color={secondColor} setColor={setSecondColor} />
+                </label>
+            </div>
 
             <br />
 
