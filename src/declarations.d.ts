@@ -1,5 +1,3 @@
-import { RGBColor } from "react-color";
-
 type GradientConfig = {
     fillStyle: string;
     fillInterval: number;
@@ -7,5 +5,5 @@ type GradientConfig = {
 
 interface ColorObj {
     hex: string;
-    rbg: RGBColor;
+    rbg: { r: number, g: number, b: number, a?: number };
 }

@@ -1,10 +1,8 @@
-import { SetStateAction } from 'react';
 import { SketchPicker } from 'react-color';
-import { ColorObj } from './declarations';
 
 export interface IColorPickerProps {
     color: ColorObj;
-    setColor: SetStateAction<ColorObj>;
+    setColor: React.Dispatch<React.SetStateAction<ColorObj>>;
 }
 
 export function ColorPicker({ color, setColor }) {

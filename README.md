@@ -19,8 +19,7 @@ the goal of this mini project is to create an smooth gradient between two user-s
 
 
 
-TODOS: 
-
+####TODOS: 
 ~~1. substitute user gradient config options in App.tsx and Gradient.tsx with GradientConfig.tsx, to clean up overall project code~~
 ~~2. allow users to select colors from color wheel interface or something similar, then export user selection in hex code format~~
 3. complete recursive flood fill function

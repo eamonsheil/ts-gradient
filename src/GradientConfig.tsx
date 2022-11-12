@@ -1,5 +1,5 @@
 // import React, { useState } from 'react';
-import { ColorPicker } from './ColorPicker';
+import { ColorPicker } from './components/ColorPicker';
 
 import { ColorObj } from './declarations';
 

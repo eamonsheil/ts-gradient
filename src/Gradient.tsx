@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { ColorObj } from './declarations';
 import { useWindowSize } from './hooks/useWindowSize';
 
 export interface IGradientProps {
@@ -11,10 +10,7 @@ export interface IGradientProps {
 
 export function Gradient({ firstColor, secondColor, fillStyle, fillInterval }: IGradientProps) {
     const [width, height] = useWindowSize();
-
     const canvasRef = useRef<HTMLCanvasElement>(null);
-
-
 
     let canvasSize = Math.floor(height * .8);
 
@@ -23,33 +19,23 @@ export function Gradient({ firstColor, secondColor, fillStyle, fillInterval }: I
         canvasSize = Math.floor(width * .8);
     }
 
-    function fillFromCenter(ctx: CanvasRenderingContext2D | null, x: number, y: number, hexVal: string, numBoxes: number, boxSize: number): void {
+    function fillFromCenter(ctx: CanvasRenderingContext2D | null, x: number, y: number, currColor: ColorObj, numBoxes: number, boxSize: number): void {
         // console.log("x: ", x)
         // console.log("y: ", y)
         // console.log("numBoxes: ", numBoxes)
         // console.log("hexVal: ", hexVal)
 
-
-        const redVal = hexVal.substring(1, 3);
-        const greenVal = hexVal.substring(3, 5);
-        const blueVal = hexVal.substring(5, 7);
-
-        console.log(redVal, greenVal, blueVal);
-        debugger
-        ctx.fillStyle = `rgb(
-            ${firstColor.rbg.r},
-            ${firstColor.rbg.g},
-            ${firstColor.rbg.b}
-            )`;
-
+        console.log(currColor.rgb.r);
+        ctx.fillStyle = `rgb(${currColor.rbg.r},
+            ${currColor.rbg.g},
+            ${currColor.rbg.b})`;
         ctx.fillRect(x * boxSize, y * boxSize, boxSize, boxSize);
-
     }
 
 
     function drawGradient(drawStyle: string): void {
 
-        const ctx = canvasRef.current.getContext('2d');
+        const ctx = canvasRef.current?.getContext('2d');
 
         // clear canvas before generating new gradient
         ctx?.clearRect(0, 0, canvasSize, canvasSize);
@@ -76,13 +62,13 @@ export function Gradient({ firstColor, secondColor, fillStyle, fillInterval }: I
                 center = Math.floor((fillInterval - 1) / 2);
                 boxSize = canvasSize / (fillInterval - 1);
 
-                fillFromCenter(ctx, center, center, firstColor.hex, fillInterval - 1, boxSize);
+                fillFromCenter(ctx, center, center, firstColor, fillInterval - 1, boxSize);
             }
             else {
                 center = Math.floor(fillInterval / 2);
                 boxSize = canvasSize / fillInterval;
 
-                fillFromCenter(ctx, center, center, firstColor.hex, fillInterval, boxSize);
+                fillFromCenter(ctx, center, center, firstColor, fillInterval, boxSize);
             }
         }
     }
