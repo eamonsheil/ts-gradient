@@ -3,7 +3,14 @@ type GradientConfig = {
     fillInterval: number;
 }
 
-interface ColorObj {
+type ColorObj = {
     hex: string;
-    rbg: { r: number, g: number, b: number, a?: number };
+    rgb: RGBObj;
+}
+
+type RGBObj = {
+    r: number,
+    g: number,
+    b: number,
+    a?: number
 }
