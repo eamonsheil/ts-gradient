@@ -5,11 +5,11 @@ import './styles.css';
 
 
 const defaultFirst: ColorObj = {
-    hex: 'ffffff',
+    hex: 'BD10E0',
     rgb: {
-        r: 255,
-        g: 255,
-        b: 255,
+        r: 189,
+        g: 16,
+        b: 224,
         a: 100
     }
 }
@@ -27,8 +27,8 @@ const defaultSecond: ColorObj = {
 const App = () => {
     const [firstColor, setFirstColor] = useState<ColorObj>(defaultFirst);
     const [secondColor, setSecondColor] = useState<ColorObj>(defaultSecond);
-    const [fillStyle, setFillStyle] = useState('iterative');
-    const [fillInterval, setFillInterval] = useState<number>(20);
+    const [fillStyle, setFillStyle] = useState('recursive');
+    const [fillInterval, setFillInterval] = useState<number>(10);
 
 
     return (

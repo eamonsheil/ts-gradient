@@ -19,51 +19,62 @@ export function Gradient({ firstColor, secondColor, fillStyle, fillInterval }: I
         canvasSize = Math.floor(width * .8);
     }
 
+    const colorDiffs: RGBObj = {
+        r: (Math.abs(firstColor.rgb.r - secondColor.rgb.r))/fillInterval,
+        g: (Math.abs(firstColor.rgb.g - secondColor.rgb.g))/fillInterval,
+        b: (Math.abs(firstColor.rgb.b - secondColor.rgb.b))/fillInterval,
+    }
 
-    function fillFromCenter(ctx: CanvasRenderingContext2D, x: number, y: number, currColor: RGBObj, numBoxes: number, boxSize: number): void {
 
-        if (x >= numBoxes || x <= 0 
-            || y >= numBoxes || y <= 0) {
+    const dir = [
+        [0,1],
+        [1,0],
+        [0,-1],
+        [-1,0]
+    ]
+
+    function fillFromCenter(ctx: CanvasRenderingContext2D, x: number, y: number, numBoxes: number, boxSize: number, seen: boolean[][]): void {
+        if ( x >= numBoxes || x < 0 
+            || y  >= numBoxes || y  < 0) {
             return;
         }
 
+        if (seen[x][y]) {
+            return;
+        }
 
-        ctx.fillStyle = `rgb(${currColor.r},${currColor.g},${currColor.b})`;
+        // rgb values are calculated differently depending on 
+        const redVal = firstColor.rgb.r > secondColor.rgb.r ? firstColor.rgb.r - colorDiffs.r * x : firstColor.rgb.r + colorDiffs.r * x;
+        const greenVal = firstColor.rgb.g > secondColor.rgb.g ? firstColor.rgb.g - colorDiffs.g * x : firstColor.rgb.g + colorDiffs.g * x;
+        const blueVal = firstColor.rgb.b > secondColor.rgb.b ? firstColor.rgb.b - colorDiffs.b * y : firstColor.rgb.b + colorDiffs.b * y;
+
+        ctx.fillStyle = `rgb(${Math.floor(redVal)},${Math.floor(greenVal)},${Math.floor(blueVal)})`;
         ctx.fillRect(x * boxSize, y * boxSize, boxSize, boxSize);
-        currColor = { ...currColor, r: currColor.r + Math.floor(255 / numBoxes) };
-        // ctx.fillRect((x + 1) * boxSize, y * boxSize, boxSize, boxSize);
-        // ctx.fillRect((x - 1) * boxSize, y * boxSize, boxSize, boxSize);
-        // ctx.fillRect(x * boxSize, (y + 1) * boxSize, boxSize, boxSize);
-        // ctx.fillRect(x * boxSize, (y - 1) * boxSize, boxSize, boxSize);
-        
-        fillFromCenter(ctx, x + 1, y, currColor, numBoxes, boxSize);
-        debugger;
-        fillFromCenter(ctx, x, y + 1, currColor, numBoxes, boxSize);
+        // debugger;
 
-        // fillFromCenter(ctx, x - 1, y, currColor, numBoxes, boxSize);
+        seen[x][y] = true;
 
-        // fillFromCenter(ctx, x, y - 1, currColor, numBoxes, boxSize);
-
+        // call function with neighboring coordinates
+        for (let i = 0; i < dir.length; i++) {
+            fillFromCenter(ctx, x + dir[i][0], y + dir[i][1], numBoxes, boxSize, seen);
+        }
     }
 
 
 
     function drawIterative(ctx: CanvasRenderingContext2D): void {
         const boxSize = canvasSize / fillInterval;
-        const redDiff = (firstColor.rgb.r - secondColor.rgb.r)/fillInterval
-        const greenDiff = (firstColor.rgb.g - secondColor.rgb.g)/fillInterval
-        const blueDiff = (firstColor.rgb.b - secondColor.rgb.b)/fillInterval
-
+    
         for (let i = 0; i < fillInterval; i++) {
             for (let j = 0; j < fillInterval; j++) {
-                const style = `rgb(${Math.floor(firstColor.rgb.r - redDiff * i)},${Math.floor(firstColor.rgb.g - greenDiff * j)},${Math.floor(firstColor.rgb.b - blueDiff * j)})`;
-                ctx.fillStyle = style;
+                ctx.fillStyle = `rgb(${Math.floor(firstColor.rgb.r - colorDiffs.r * i)},${Math.floor(firstColor.rgb.g - colorDiffs.g * j)},${Math.floor(firstColor.rgb.b - colorDiffs.b * j)})`;
                 ctx.fillRect(i * boxSize, j * boxSize, boxSize, boxSize);
             }
         }
     }
 
     function drawGradient(drawStyle: string): void {
+        
 
         const res = canvasRef.current?.getContext('2d');
         // error handling for typescript compiler
@@ -82,19 +93,27 @@ export function Gradient({ firstColor, secondColor, fillStyle, fillInterval }: I
         if (drawStyle === "recursive") {
             let center: number;
             let boxSize: number;
+            const seen: boolean[][] = []
 
 
             if (fillInterval % 2 === 0) {
                 center = Math.floor((fillInterval - 1) / 2);
                 boxSize = canvasSize / (fillInterval - 1);
 
-                fillFromCenter(ctx, center, center, firstColor.rgb, fillInterval - 1, boxSize);
+                for (let i = 0; i < fillInterval - 1; i++) {
+                    seen.push(new Array(fillInterval - 1).fill(false))
+                }
+
+                fillFromCenter(ctx, center, center, fillInterval - 1, boxSize, seen);
             }
             else {
                 center = Math.floor(fillInterval / 2);
                 boxSize = canvasSize / fillInterval;
+                for (let i = 0; i < fillInterval; i++) {
+                    seen.push(new Array(fillInterval - 1).fill(false))
+                }
 
-                fillFromCenter(ctx, center, center, firstColor.rgb, fillInterval, boxSize);
+                fillFromCenter(ctx, center, center, fillInterval, boxSize, seen);
             }
         }
     }

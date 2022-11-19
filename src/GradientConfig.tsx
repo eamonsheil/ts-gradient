@@ -1,7 +1,6 @@
 // import React, { useState } from 'react';
 import { ColorPicker } from './components/ColorPicker';
 
-import { ColorObj } from './declarations';
 
 
 export interface IGradientConfigProps {
@@ -18,7 +17,7 @@ export interface IGradientConfigProps {
 export function GradientConfig({ firstColor, setFirstColor, secondColor, setSecondColor, setFillStyle, fillInterval, setFillInterval }: IGradientConfigProps) {
 
     return (
-        <div>
+        <>
             <div className='color-selection'>
                 <label>First Color:
                     <ColorPicker color={firstColor} setColor={setFirstColor} />
@@ -32,8 +31,8 @@ export function GradientConfig({ firstColor, setFirstColor, secondColor, setSeco
 
             <label htmlFor="fillStyle">Fill Style:
                 <select name="fillStyle" id="fillStyle" onChange={e => setFillStyle(e.target.value)}>
-                    <option value="iterative">iterative</option>
                     <option value="recursive">recursive</option>
+                    <option value="iterative">iterative</option>
                 </select>
             </label>
 
@@ -50,6 +49,6 @@ export function GradientConfig({ firstColor, setFirstColor, secondColor, setSeco
                 </label>
             </div>
 
-        </div>
+        </>
     );
 }
