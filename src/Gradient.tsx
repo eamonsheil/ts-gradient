@@ -22,21 +22,23 @@ export function Gradient({ firstColor, secondColor, fillStyle, fillInterval }: I
 
     function fillFromCenter(ctx: CanvasRenderingContext2D, x: number, y: number, currColor: RGBObj, numBoxes: number, boxSize: number): void {
 
-        // 
-        if (x > numBoxes || y > numBoxes
-            || x < 0 || y < 0) {
+        if (x >= numBoxes || x <= 0 
+            || y >= numBoxes || y <= 0) {
             return;
         }
 
 
         ctx.fillStyle = `rgb(${currColor.r},${currColor.g},${currColor.b})`;
         ctx.fillRect(x * boxSize, y * boxSize, boxSize, boxSize);
-
         currColor = { ...currColor, r: currColor.r + Math.floor(255 / numBoxes) };
-        // debugger;
-        fillFromCenter(ctx, x - 1, y, currColor, numBoxes, boxSize);
-
-        fillFromCenter(ctx, x, y - 1, currColor, numBoxes, boxSize);
+        // ctx.fillRect((x + 1) * boxSize, y * boxSize, boxSize, boxSize);
+        // ctx.fillRect((x - 1) * boxSize, y * boxSize, boxSize, boxSize);
+        // ctx.fillRect(x * boxSize, (y + 1) * boxSize, boxSize, boxSize);
+        // ctx.fillRect(x * boxSize, (y - 1) * boxSize, boxSize, boxSize);
+        
+        fillFromCenter(ctx, x + 1, y, currColor, numBoxes, boxSize);
+        debugger;
+        fillFromCenter(ctx, x, y + 1, currColor, numBoxes, boxSize);
 
         // fillFromCenter(ctx, x - 1, y, currColor, numBoxes, boxSize);
 
@@ -48,13 +50,15 @@ export function Gradient({ firstColor, secondColor, fillStyle, fillInterval }: I
 
     function drawIterative(ctx: CanvasRenderingContext2D): void {
         const boxSize = canvasSize / fillInterval;
+        const redDiff = (firstColor.rgb.r - secondColor.rgb.r)/fillInterval
+        const greenDiff = (firstColor.rgb.g - secondColor.rgb.g)/fillInterval
+        const blueDiff = (firstColor.rgb.b - secondColor.rgb.b)/fillInterval
 
         for (let i = 0; i < fillInterval; i++) {
             for (let j = 0; j < fillInterval; j++) {
-                const style = `rgb(${Math.floor(255 - 42.5 * i)},${Math.floor(255 - 42.5 * j)},0)`;
+                const style = `rgb(${Math.floor(firstColor.rgb.r - redDiff * i)},${Math.floor(firstColor.rgb.g - greenDiff * j)},${Math.floor(firstColor.rgb.b - blueDiff * j)})`;
                 ctx.fillStyle = style;
-                // debugger;
-                ctx.fillRect(j * boxSize, i * boxSize, boxSize, boxSize);
+                ctx.fillRect(i * boxSize, j * boxSize, boxSize, boxSize);
             }
         }
     }
@@ -62,6 +66,7 @@ export function Gradient({ firstColor, secondColor, fillStyle, fillInterval }: I
     function drawGradient(drawStyle: string): void {
 
         const res = canvasRef.current?.getContext('2d');
+        // error handling for typescript compiler
         if (!res || !(res instanceof CanvasRenderingContext2D)) {
             throw new Error('Failed to get 2D context');
         }
@@ -82,7 +87,6 @@ export function Gradient({ firstColor, secondColor, fillStyle, fillInterval }: I
             if (fillInterval % 2 === 0) {
                 center = Math.floor((fillInterval - 1) / 2);
                 boxSize = canvasSize / (fillInterval - 1);
-
 
                 fillFromCenter(ctx, center, center, firstColor.rgb, fillInterval - 1, boxSize);
             }
