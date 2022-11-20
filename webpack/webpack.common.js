@@ -14,6 +14,7 @@ module.exports = {
       {
         // webpack should use babel loader for all .js, .jsx, .ts, and .tsx files, excluding the node_modules folder
         test: /\.(ts|js)x?$/,
+        // include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/,
         use: [
           {
@@ -46,4 +47,5 @@ module.exports = {
     }),
   ],
   stats: 'errors-only',
+  cache: false
 }
