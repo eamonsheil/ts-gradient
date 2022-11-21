@@ -42,9 +42,9 @@ module.exports = {
     filename: 'bundle.js',
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '..', './src/index.html'),
-    }),
+    new HtmlWebpackPlugin(
+      // {template: path.resolve(__dirname, '..', './src/index.html'),}
+    ),
   ],
   stats: 'errors-only',
   cache: false
