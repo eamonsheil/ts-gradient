@@ -1,0 +1,6 @@
+{
+    "buildCommand": "webpack --config webpack/webpack.config.js --env env=prod",
+    "cleanUrls": true,
+    "framework": "null"
+
+  }
