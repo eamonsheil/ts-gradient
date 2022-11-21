@@ -1,7 +1,5 @@
 // config file for the Development environment
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const webpack = require('webpack');
-
 
 module.exports = {
     mode: 'development',
@@ -14,9 +12,6 @@ module.exports = {
     // this controls generation of source maps for the app's code
     devtool: 'cheap-module-source-map',
     plugins: [
-        new webpack.DefinePlugin({
-            'process.env.name': JSON.stringify('eamon')
-        }),
         new ReactRefreshWebpackPlugin(),
     ],
 }

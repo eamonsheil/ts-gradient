@@ -1,5 +1,6 @@
 {
   "name": "template",
+  "homepage": "https://ts-gradient.vercel.app/",
   "version": "1.0.0",
   "description": "",
   "main": ".eslintrc.js",
